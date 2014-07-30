@@ -72,11 +72,15 @@ class HelloWeb:
 
 	@cherrypy.expose
 	def create(self):
-		return "UNder construction"
+		return "Under construction"
 
 	@cherrypy.expose
 	def stream(self):
 		return "<html><head><body><h3>Nice</h3></body></head></html>"
+
+	@cherrypy.expose
+	def ident(self):
+		return "VALUE"
 
 	@cherrypy.expose
 	def petri(self):
