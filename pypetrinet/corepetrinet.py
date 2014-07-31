@@ -36,19 +36,18 @@ class BasePetriNet(PetriNetPuppet):
 		self.graph = nx.Graph()
 		super(BasePetriNet).__init__()
 
-	def add_Properties(self, prop):
+	def add_Properties(self, name, prop):
 		'''
 			prop in dict format
 		'''
 		for p in prop.keys():
 			N = self.graph.node
-			if p in self.graph.node:
-				N[p].append(prop[p])
-			else:
-				N[p] = prop[p]
-
-			#self.graph.node[p] = prop[p]
-		print(self.graph.node)
+			if not (name in N):
+				raise Exception("This name not in base")
+			N[name].update({p: prop[p]})
+			'''else:
+				N[p] = prop[p]'''
+			print(N[name])
 
 	def addStates(self, states):
 		self._addElement(states, 'place')
@@ -63,6 +62,14 @@ class BasePetriNet(PetriNetPuppet):
 	def connectElements(self, node, inp, otp):
 		[self.graph.add_edge(node, oelem) for oelem in otp]
 		[self.graph.add_edge(inp, node) for inp in inp]
+
+	def get(self, param, value):
+		'''
+			filter by propetries of node
+		'''
+		return list(filter(
+			lambda x: param in self.graph.node[x] and 
+			self.graph.node[x][param] == value, self.graph.node.keys()))
 
 
 
@@ -90,8 +97,9 @@ class PetriNet:
 		self.pn.addMoves(T)
 
 	#Добавить свойство к определённому ноду
-	def add_property(self, *args, **kwargs):
-		self.pn.add_Properties(kwargs)
+	def add_property(self, name, *args, **kwargs):
+		if name != None:
+			self.pn.add_Properties(name, kwargs)
 
 	def add_state(self, *args, **kwargs):
 		self.pn.add_state(**kwargs)
@@ -134,3 +142,9 @@ class PetriNet:
 	#Создание стрелок для выхода в вебе
 	def _construct_path(self, petri_moves, delay):
 		return 'M100 {0} H200 R20'.format(delay)
+
+	def getPlaces(self):
+		return self.pn.get('param', 'place')
+
+	def isMarked(self, node):
+		return node in self.pn.get('type', 'marked')

@@ -11,43 +11,6 @@ from jinja2 import Environment, FileSystemLoader
 
 from corepetrinet import PetriNet
 
-
-#http://www.iacp.dvo.ru/lab_11/otchet/ot2000/pn3.html
-#http://stackoverflow.com/questions/4946213/petri-net-drawing-and-code-generation
-#http://journals.tsu.ru/pdm/&journal_page=archive&id=888&article_id=706
-#https://github.com/zamzam/PetriNetSim/blob/master/src/business/PetriNet.java
-#https://github.com/aabs/PetriNets/tree/master/PetriNetCore
-#https://github.com/boris-s/y_petri
-#http://aabs.wordpress.com/2010/03/10/programming-with-petri-nets/
-#http://cherrypy.readthedocs.org/en/latest/intro/install.html
-
-#Programming Guide
-#http://cherrypy.readthedocs.org/en/latest/progguide/index.html
-
-#Добавить паттерны проектирования
-
-#Сеть первого рода - это цветная сеть Петри, описанная на языке предписаний.
-#Сеть второго рода - это сеть, представленная в виде иерархической композиции объектов.
-#Инцидентность — понятие, используемое только в отношении ребра и вершины:
-
-#Описание сети (для графического вывода)
-#Круги - states(стостояния или места)
-
-#Templates
-#http://cherrypy.readthedocs.org/en/latest/progguide/choosingtemplate.html#id2
-
-#Tutorial Raphael
-#http://cancerbero.mbarreneche.com/raphaeltut/
-#http://raphaeljs.com/
-
-#Подключение библотек
-#http://ginstrom.com/scribbles/2010/03/07/simple-ajax-with-cherrypy-and-jquery/
-
-#Example of application
-#https://www.digitalocean.com/community/articles/how-to-deploy-cherrypy-web-applications-behind-nginx-reverse-proxy
-
-#http://www.informatik.uni-hamburg.de/TGI/PetriNets/
-
 sess = sessions
 PATH = os.path.join(os.path.abspath("."), u"media")
 env = Environment(loader=FileSystemLoader('media'))
