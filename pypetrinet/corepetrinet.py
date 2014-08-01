@@ -45,10 +45,6 @@ class BasePetriNet(PetriNetPuppet):
 			if not (name in N):
 				raise Exception("This name not in base")
 			N[name].update({p: prop[p]})
-			'''else:
-				N[p] = prop[p]'''
-			print(N[name])
-
 	def addStates(self, states):
 		self._addElement(states, 'place')
 	def addMoves(self, moves):
@@ -130,13 +126,12 @@ class PetriNet:
 
 	#Подготовка к графическому представлению
 	def web_output(self):
-		move = self.pn.moves
 		paths=[]
+		move = self.getMoves()
 		delay = 300
-		for mkeys in move.keys():
-			for petri_moves in move[mkeys]:
-				paths.append(self._construct_path(petri_moves, delay))
-				delay += 50
+		for petri_moves in move:
+			paths.append(self._construct_path(petri_moves, delay))
+			delay += 50
 		return paths
 
 	#Создание стрелок для выхода в вебе
@@ -145,6 +140,9 @@ class PetriNet:
 
 	def getPlaces(self):
 		return self.pn.get('param', 'place')
+
+	def getMoves(self):
+		return self.pn.get('param', 'move')
 
 	def isMarked(self, node):
 		return node in self.pn.get('type', 'marked')
