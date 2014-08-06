@@ -2,14 +2,17 @@
 <head>
 	<title>Petri Net</title>
 	<body>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
 	<script type="text/javascript">
-		var paper = Raphael(10, 50, 320, 200);
-		var circle = paper.circle(50, 40, 10);
-		// Sets the fill attribute of the circle to red (#f00)
-		circle.attr("fill", "#f00");
-
-		// Sets the stroke attribute of the circle to white
-		circle.attr("stroke", "#fff");
+		var paper = Raphael(250, 250, 600, 600);
+		var startpos = 40;
+		{% for circ in circles %}
+			paper.ellipse(startpos,70,40,30).attr({fill: "red"});
+			startpos += 120;
+		{% endfor %}
+		//paper.ellipse(40*i,70,40,30).attr({fill: "yello"});
+		//var path1 = paper.path("m10,10l30,40l150,80z").
+	attr({fill: "green", "stroke-width": 2});
 	</script>
 	</body>
 </head>

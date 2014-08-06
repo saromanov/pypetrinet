@@ -13,6 +13,7 @@ from corepetrinet import PetriNet
 
 sess = sessions
 PATH = os.path.join(os.path.abspath("."), u"media")
+JSPATH = os.path.join(os.path.abspath("."), u"js")
 env = Environment(loader=FileSystemLoader('media'))
 
 #Посмотреть макросы в jinja
@@ -30,7 +31,7 @@ class HelloWeb:
 		tmpl = env.get_template('petri.html')
 		#return open(os.path.join(PATH, u'petri.html'))
 		return tmpl.render(pos=list(range(0,4 * 1000,300)), names=['t1', 't2', 't3'], \
-			circles=['s1', 's2', 's3', 's4'], circlepos = list(range(0,4 * 1000,300)),\
+			circles=p.web_output(), circlepos = list(range(0,4 * 1000,300)),\
 			lines = p.web_output())
 
 	@cherrypy.expose
@@ -80,7 +81,11 @@ def test_petrinet_builder():
 config = {'/media': {
 	'tools.staticdir.on': True,
 	'tools.staticdir.dir': PATH,
-}
+},
+'/js': {
+	'tools.staticdir.on': True,
+	'tools.staticdir.dir': JSPATH,
+},
 
 	
 }

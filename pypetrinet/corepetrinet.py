@@ -5,6 +5,35 @@ import networkx as nx
 
 #http://networkx.github.io/documentation/networkx-1.9/tutorial/tutorial.html#adding-attributes-to-graphs-nodes-and-edges
 
+
+class Coordinates:
+	def __init__(self, title, xpos, ypos, width, heigth):
+		self.title = title
+		self.xpos = xpos
+		self.ypos = ypos
+		self.width = width
+		self.heigth = heigth
+
+class WebView:
+	def __init__(self, *args, **kwargs):
+		self._data = []
+		self.placepos = 40
+		self.movepos = 20
+
+	def addItem(self,value):
+		''' For simple chain structure'''
+		if value == 'place':
+			self._data.append(Coordinates('place', self.placepos,15,100,20))
+			self.placepos += 120
+		if value == 'move':
+			self._data.append(('move', self.movepos,70,40,30))
+			self.movepos += 120
+
+	def Representation(self):
+		'''
+			Compute optimal view of Petri net'''
+		return self._data
+
 class PetriMoves:
 	def __init__(self, inp, out):
 		self.input = inp
@@ -34,6 +63,8 @@ class PetriNetBuilder:
 class BasePetriNet(PetriNetPuppet):
 	def __init__(self):
 		self.graph = nx.Graph()
+		self.webview = WebView()
+
 		super(BasePetriNet).__init__()
 
 	def add_Properties(self, name, prop):
@@ -53,11 +84,17 @@ class BasePetriNet(PetriNetPuppet):
 	def _addElement(self, elements, param):
 		[self.graph.add_node(elem, param=param) for elem in elements]
 
+	def _appendEdge(self, node, connode):
+		self.graph.add_edge(node, connode)
+		self.webview.addItem('place')
+		self.webview.addItem('move')
+
 	#Соединяем полученные метки
 	#places соединяем с moves
 	def connectElements(self, node, inp, otp):
-		[self.graph.add_edge(node, oelem) for oelem in otp]
-		[self.graph.add_edge(inp, node) for inp in inp]
+
+		[self._appendEdge(node, oelem) for oelem in otp]
+		[self._appendEdge(inp, node) for inp in inp]
 
 	def get(self, param, value):
 		'''
@@ -66,6 +103,9 @@ class BasePetriNet(PetriNetPuppet):
 		return list(filter(
 			lambda x: param in self.graph.node[x] and 
 			self.graph.node[x][param] == value, self.graph.node.keys()))
+
+	def getView(self):
+		return self.webview.Representation()
 
 
 
@@ -126,13 +166,14 @@ class PetriNet:
 
 	#Подготовка к графическому представлению
 	def web_output(self):
-		paths=[]
+		'''paths=[]
 		move = self.getMoves()
 		delay = 300
 		for petri_moves in move:
 			paths.append(self._construct_path(petri_moves, delay))
 			delay += 50
-		return paths
+		return paths'''
+		return self.pn.getView()
 
 	#Создание стрелок для выхода в вебе
 	def _construct_path(self, petri_moves, delay):
